@@ -466,4 +466,8 @@ impl<E: TchElement> FloatTensorOps<Self> for LibTorch<E> {
             TchTensor::new(tensor.tensor.to_kind(kind))
         }
     }
+
+    fn float_cumsum(tensor: TchTensor, dim: usize) -> TchTensor {
+        TchOps::cumsum(tensor, dim)
+    }
 }

@@ -524,6 +524,11 @@ pub enum NumericOperationIr<E> {
     /// Float => [powf](burn_tensor::ops::FloatTensorOps::float_powf).
     /// Int => [powf](burn_tensor::ops::IntTensorOps::int_powf).
     Powf(BinaryOpIr),
+    /// Operation corresponding to:
+    ///
+    /// Float => [cumsum](burn_tensor::ops::FloatTensorOps::float_cumsum).
+    /// Int => [cumsum](burn_tensor::ops::IntTensorOps::int_cumsum).
+    CumSum(ScalarOpIr<usize>),
 }
 
 /// Operation intermediate representation specific to an int tensor.
@@ -1670,6 +1675,9 @@ impl<E: Element> NumericOperationIr<E> {
             NumericOperationIr::Powf(repr) => {
                 vec![&repr.lhs, &repr.rhs, &repr.out]
             }
+            NumericOperationIr::CumSum(desc) => {
+                vec![&desc.lhs, &desc.out]
+            }
         }
     }
     fn mark_read_only(&mut self, nodes: &[TensorId]) -> Vec<TensorIr> {
@@ -1830,6 +1838,9 @@ impl<E: Element> NumericOperationIr<E> {
             NumericOperationIr::Powf(repr) => {
                 repr.lhs.mark_read_only(nodes, &mut output);
                 repr.rhs.mark_read_only(nodes, &mut output);
+            }
+            NumericOperationIr::CumSum(repr) => {
+                repr.lhs.mark_read_only(nodes, &mut output);
             }
         };
 
@@ -2451,6 +2462,7 @@ impl<E> core::hash::Hash for NumericOperationIr<E> {
             NumericOperationIr::Clamp(repr) => repr.hash(state),
             NumericOperationIr::IntRandom(repr) => repr.hash(state),
             NumericOperationIr::Powf(repr) => repr.hash(state),
+            NumericOperationIr::CumSum(repr) => repr.hash(state),
         }
     }
 }

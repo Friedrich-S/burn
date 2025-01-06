@@ -10,7 +10,8 @@ use super::{RouterTensor, RunnerClient};
 use crate::{
     binary_bool_ops, binary_float_cmp_ops, binary_float_ops, binary_int_cmp_ops, binary_int_ops,
     reduce_float_dim_ops, reduce_float2int_dim_ops, reduce_int_dim_ops, scalar_float_cmp_ops,
-    scalar_float_ops, scalar_int_cmp_ops, scalar_int_ops, unary_float_ops, unary_int_ops,
+    scalar_float_dim_ops, scalar_float_ops, scalar_int_cmp_ops, scalar_int_dim_ops, scalar_int_ops,
+    unary_float_ops, unary_int_ops,
 };
 
 /// A runner's context contains a [handle container](HandleContainer) to manage
@@ -562,6 +563,9 @@ impl<B: BackendIr> RunnerClient for Runner<B> {
                 NumericOperationIr::Powf(desc) => {
                     binary_float_ops!(handles, desc, B::float_powf)
                 }
+                NumericOperationIr::CumSum(desc) => {
+                    scalar_float_dim_ops!(handles, desc, B::float_cumsum)
+                }
             },
             OperationIr::NumericInt(_dtype, op) => match op {
                 NumericOperationIr::Add(desc) => {
@@ -758,6 +762,9 @@ impl<B: BackendIr> RunnerClient for Runner<B> {
 
                     let output = B::int_powf(lhs, rhs);
                     handles.register_int_tensor::<B>(&desc.out.id, output);
+                }
+                NumericOperationIr::CumSum(desc) => {
+                    scalar_int_dim_ops!(handles, desc, B::int_cumsum)
                 }
             },
             OperationIr::Bool(op) => match op {

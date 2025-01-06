@@ -407,6 +407,10 @@ impl<E: TchElement> IntTensorOps<Self> for LibTorch<E> {
         TchOps::argsort(tensor, dim, descending)
     }
 
+    fn int_cumsum(tensor: IntTensor<Self>, dim: usize) -> IntTensor<Self> {
+        TchOps::cumsum(tensor, dim)
+    }
+
     fn bitwise_and(lhs: IntTensor<Self>, rhs: IntTensor<Self>) -> IntTensor<Self> {
         TchOps::bitwise_and(lhs, rhs)
     }

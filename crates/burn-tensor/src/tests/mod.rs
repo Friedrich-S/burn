@@ -138,6 +138,7 @@ macro_rules! testgen_quantization {
         burn_tensor::testgen_q_tanh!();
         burn_tensor::testgen_q_topk!();
         burn_tensor::testgen_q_transpose!();
+        burn_tensor::testgen_q_cumsum!();
     };
 }
 
@@ -264,6 +265,7 @@ macro_rules! testgen_with_float_param {
         burn_tensor::testgen_split!();
         burn_tensor::testgen_prod!();
         burn_tensor::testgen_grid_sample!();
+        burn_tensor::testgen_cumsum!();
 
         // test stats
         burn_tensor::testgen_var!();

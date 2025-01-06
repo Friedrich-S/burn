@@ -513,6 +513,16 @@ where
         ArrayD::from_elem(IxDyn(&[1]), prod).into_shared()
     }
 
+    pub fn cumsum(tensor: SharedArray<E>, dim: usize) -> NdArrayTensSharedArrayor<E> {
+        let mut array = tensor.array.into_owned();
+        array.accumulate_axis_inplace(Axis(dim), |&prev, curr| {
+            *curr += prev;
+        });
+        let array = array.into_shared();
+
+        SharedArray { array }
+    }
+
     pub fn mean_dim(tensor: SharedArray<E>, dim: usize) -> SharedArray<E> {
         let ndims = tensor.shape().num_dims();
         match ndims {

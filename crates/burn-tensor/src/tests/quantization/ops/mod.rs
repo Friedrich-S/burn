@@ -10,6 +10,7 @@ mod chunk;
 mod clamp;
 mod cos;
 mod cosh;
+mod cumsum;
 mod div;
 mod erf;
 mod exp;

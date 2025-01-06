@@ -1992,6 +1992,31 @@ impl<B: FusionBackend> IntTensorOps<Self> for Fusion<B> {
         out
     }
 
+    fn int_cumsum(tensor: IntTensor<Self>, dim: usize) -> IntTensor<Self> {
+        scalar_int_ops!(CumsumOps, B::int_cumsum, usize, noconvert);
+
+        let mut streams = OperationStreams::default();
+        streams.tensor(&tensor);
+        let dtype = tensor.dtype;
+        let shape = tensor.shape.clone();
+        let out = tensor
+            .client
+            .tensor_uninitialized(shape, B::FloatElem::dtype());
+
+        let desc = ScalarOpIr {
+            lhs: tensor.into_ir(),
+            rhs: dim,
+            out: out.to_ir_out(),
+        };
+        out.client.register(
+            streams,
+            OperationIr::NumericInt(dtype, NumericOperationIr::CumSum(desc.clone())),
+            CumsumOps::<B>::new(desc),
+        );
+
+        out
+    }
+
     fn bitwise_and(lhs: IntTensor<Self>, rhs: IntTensor<Self>) -> IntTensor<Self> {
         binary_int_ops!(BitwiseAndOps, B::bitwise_and);
 

@@ -548,6 +548,10 @@ where
         execute_with_dtype!(int(tensor.dtype), I, kernel::flip::<R, I, BT>(tensor, axes))
     }
 
+    fn int_cumsum(_tensor: IntTensor<Self>, _dim: usize) -> IntTensor<Self> {
+        todo!()
+    }
+
     fn bitwise_and(lhs: IntTensor<Self>, rhs: IntTensor<Self>) -> IntTensor<Self> {
         execute_with_dtype!(int(lhs.dtype), I, numeric::bitwise_and::<R, I>(lhs, rhs))
     }

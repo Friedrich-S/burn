@@ -19,6 +19,7 @@ mod close;
 mod cos;
 mod cosh;
 mod create_like;
+mod cumsum;
 mod div;
 mod dot;
 mod erf;
