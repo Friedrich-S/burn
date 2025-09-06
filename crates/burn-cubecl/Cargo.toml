@@ -63,6 +63,7 @@ cubecl = { workspace = true, features = [
     "reduce",
     "random",
     "stdlib",
+    "scan",
 ] }
 cubecl-quant = { workspace = true, features = ["kernels"] }
 

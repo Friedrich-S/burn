@@ -37,6 +37,9 @@ pub mod quantization;
 /// Reduction algorithms
 pub mod reduce;
 
+/// Associative scan algorithms
+pub mod scan;
+
 pub(crate) use clamp::*;
 pub(crate) use comparison::*;
 pub use index::*;
